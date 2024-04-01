@@ -158,12 +158,13 @@ paths:
         description: Details not found
       '500':
         description: Internal server error
-  /accounts/{id}/transactions:
+  
+  /accounts/{id}/transactions/{year}-{month}:
    get:
     tags:
       - Accounts
-    summary: Get transactions of an provided account ID
-    description: API for retrieving all transactions from the account by ID
+    summary: Get transactions of a provided account ID for a specific month
+    description: API for retrieving all transactions from the account by ID for a specific month
     produces:
       - application/json
     parameters:
@@ -172,10 +173,18 @@ paths:
         required: true
         type: string
         description: ID of the account
-      - in: query
-        name: month
+      - name: year
+        in: path
+        required: true
         type: string
-        description: the month to load (format YYYY-mm)
+        format: YYYY
+        description: The year to load (e.g., 2024)
+      - name: month
+        in: path
+        required: true
+        type: string
+        format: mm
+        description: The month to load (01 for January, 02 for February, etc.)
     responses:
       '200':
         description: List of transactions for the specified account
@@ -186,11 +195,12 @@ paths:
       '401':
         description: Unauthorized
       '403':
-        description: operation forbiden
+        description: Operation forbidden
       '404':
-        description: account not found
+        description: Account not found
       '500':
         description: Internal server error
+
   /categories:
    get:
     tags:
