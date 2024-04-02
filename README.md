@@ -1,4 +1,5 @@
-back : 
+back-end :
+# Check Mongo 
 mongod 
 # Install dependencies
 npm install
@@ -8,5 +9,8 @@ npm run dev:server
 
 # Populate database with two users
 npm run populate-db
-front:
+
+front-end:
+
+# Start local dev server
 npm start
