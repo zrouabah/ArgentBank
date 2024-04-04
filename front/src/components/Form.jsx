@@ -7,7 +7,11 @@ function Form() {
   const [formdata, setFormdata] = useState({
     email: "tony@stark.com",
     password: "password123",
+    remember: false,
   });
+
+  // Gestion de l'état d'erreur :
+  const [errorMessage, setErrorMessage] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,12 +39,20 @@ function Form() {
       console.log('Data received from server:', data);
       if (data) {
         dispatch(login(data.body));
+        // Si l'utilisateur a coché la case "Remember me", on enregistre le token dans le localStorage :
+        if (formdata.remember) {
+          localStorage.setItem('token', data.body.token);
+        }
+        setErrorMessage("");
         navigate('/user');
       } else {
-        throw new Error('Data is undefined');
+        // Gestion de l'erreur si le mot de passe ou l'email est incorrect :
+        setErrorMessage("Le mot de passe ou l'email est incorrect.");
       }
     }).catch(error => {
-      console.error('Login error:', error);
+      // Gestion de l'erreur si le serveur ne répond pas ou qu'une erreur est survenue :
+      console.error(error);
+      setErrorMessage("Une erreur est survenue lors de l'authentification.");
     });
   };
 
@@ -67,10 +79,12 @@ function Form() {
         />
       </div>
       <div className="input-remember">
-        <input type="checkbox" id="remember-me" />
+        <input type="checkbox" id="remember-me" name="remember" checked={formdata.remember} onChange={handleChange}/>
         <label htmlFor="remember-me">Remember me</label>
       </div>
       <button type="submit" className="sign-in-button" onClick={handleLogin}>Sign In</button>
+      { /* Gestion de l'affichage du message d'erreur : */ }
+      { errorMessage && <p className=" error-message">{errorMessage}</p> }
     </form>
   );
 }
