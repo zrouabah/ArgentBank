@@ -5,6 +5,7 @@ export const login = (payload) => {
     }
 }
 
+// signalé que l'utilisateur est authentifié
 export const isLogged = (payload) => {
     return {
       type: 'IS_LOGGED',
@@ -12,13 +13,14 @@ export const isLogged = (payload) => {
     }
 }
 
+// signaler que le nom d'utilisateur a été modifié avec succès
 export const editName = (payload) => {
     return {
         type: 'EDIT_NAME',
         payload,
     }
 }
-
+// signaler que l'utilisateur s'est déconnecté
 export const logout = () => {
     return {
         type: 'LOGOUT',

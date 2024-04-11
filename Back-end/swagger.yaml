@@ -118,7 +118,7 @@ paths:
           description: unauthorized
         '500':
           description: Internal Server Error
-  /accounts/{idAccount}/transactions/{idTransaction}/details:
+  /accounts/{idAccount}/transactions/{idTransaction}:
    patch:
     tags:
       - Accounts
@@ -159,12 +159,12 @@ paths:
       '500':
         description: Internal server error
   
-  /accounts/{id}/transactions/{year}-{month}:
+  /accounts/{id}/transactions:
    get:
     tags:
       - Accounts
-    summary: Get transactions of a provided account ID for a specific month
-    description: API for retrieving all transactions from the account by ID for a specific month
+    summary: Get transactions of a provided account ID
+    description: API for retrieving all transactions from the account by ID
     produces:
       - application/json
     parameters:
@@ -174,17 +174,17 @@ paths:
         type: string
         description: ID of the account
       - name: year
-        in: path
-        required: true
+        in: query
+        required: false
         type: string
         format: YYYY
-        description: The year to load (e.g., 2024)
+        description: The year to filter transactions (e.g., 2024)
       - name: month
-        in: path
-        required: true
+        in: query
+        required: false
         type: string
         format: mm
-        description: The month to load (01 for January, 02 for February, etc.)
+        description: The month to filter transactions (01 for January, 02 for February, etc.)
     responses:
       '200':
         description: List of transactions for the specified account
@@ -200,6 +200,7 @@ paths:
         description: Account not found
       '500':
         description: Internal server error
+
 
   /categories:
    get:

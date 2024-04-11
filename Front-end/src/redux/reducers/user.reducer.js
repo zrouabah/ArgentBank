@@ -1,11 +1,12 @@
+// On initialise le state de notre reducer en allant chercher le token dans le localStorage. Si le token est présent, on initialise isLogged à true, sinon à false.
 const initialState = {
-    token: null,
+    token: localStorage.getItem('token'),
     userName: '',
     firstName: '',
     lastName: '',
     email: '',
     id: '',
-    isLogged: false,
+    isLogged: !!localStorage.getItem('token'),
 };
 
 
@@ -18,7 +19,8 @@ const userReducer = (state = initialState, action) => {
         case'EDIT_NAME':
             return { ...state, ...action.payload };
         case 'LOGOUT':
-            return initialState
+            // Return le state initial et met le token à null et isLogged à false:
+            return { ...initialState, token: null, isLogged: false }
         default:
             return state
     }

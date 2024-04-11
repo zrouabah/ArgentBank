@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
-import { isLogged } from "../redux/actions/user.actions";
-import { editName } from "../redux/actions/user.actions";
+import { isLogged, editName } from "../redux/actions/user.actions";
 
 import Account from "../components/Account";
 import EditNameForm from "../components/EditNameForm";
 
 function User() {
-    const user = useSelector(store => store.user)
-
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const user = useSelector(store => store.user);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [formdata] = useState({
         id: "",
         email:"",
-    })
+    });
 
     useEffect(() => {
-        // S'il n'y a pas de user.token retourne vers la page SignIn
         if (user.token === null) {
             return navigate('/login');
         } else {
             const handleProfile = async() => {
                 try {
-                    await fetch('http://localhost:3001/api/v1/user/profile', {
+                    const response = await fetch('http://localhost:3001/api/v1/user/profile', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -33,21 +30,19 @@ function User() {
                             'Authorization': `Bearer ${user.token}`
                         },
                         body: JSON.stringify(formdata)
-                    }).then(response => {
-                        if (response.ok) {
-                            return response.json()
-                        }
-                    }).then(data => {
-                        dispatch(isLogged(data.body))
-                    })
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        dispatch(isLogged(data.body));
+                    }
                 } catch(error) {
-                    console.log(error)
+                    console.log(error);
                 }
             };
 
             handleProfile();
         }
-    }, [dispatch, navigate, user.token, user.isLogged, formdata])
+    }, [dispatch, navigate, user.token, formdata]);
 
     const [showEditForm, setShowEditForm] = useState(false);
 
@@ -98,7 +93,7 @@ function User() {
                 showEditForm={showEditForm}
             />            
         </main>
-    )
+    );
 }
 
 export default User;

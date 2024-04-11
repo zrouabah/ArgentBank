@@ -3,18 +3,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { editName } from "../redux/actions/user.actions";
 
 function EditNameForm({ handleShowEditForm }) {
-    const user = useSelector(store => store.user)
-    const dispatch = useDispatch();
+    const user = useSelector(store => store.user) /*extraire l'objet utilisateur (user) de l'état 
+    global Redux pour obtenir les infos de mon utulisateur*/
+    const dispatch = useDispatch(); /*pour envoyer des actions au magasin Redux (pour modifier le nom d'utuli*/
 
     const [form, setForm] = useState({
         userName: user.userName,
     });
 
     const handleChangeForm = (e) => {
-
         setForm({ ...form, [e.target.name]: e.target.value });
       };
-
+      
+/*envoie une requête PUT à l'API avec les nouvelles informations utilisateur, 
+puis met à jour l'état Redux avec les données de l'utilisateur modifiées*/
     const handleEditForm = (e) => {
         e.preventDefault();
 
@@ -40,6 +42,8 @@ function EditNameForm({ handleShowEditForm }) {
     }
 
     return (
+    /*Il retourne un formulaire permettant de modifier le nom d'utilisateur 
+    ainsi que les boutons "Save" et "Cancel".*/
         <div className="edit-form-content">
             <h2>Edit user info</h2>
             <form className="edit-form">

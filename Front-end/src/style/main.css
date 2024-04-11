@@ -415,7 +415,9 @@ body {
   font-weight: 500;
   color: #00bc77;
 }
-  
+.error-message{
+  color: red;
+}
 .error-nav {
   color: #00bc77;
   text-decoration: underline;
